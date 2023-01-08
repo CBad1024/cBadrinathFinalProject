@@ -9,7 +9,7 @@ class Screen(object):
     
     def __init__(self):
         self.isActive = False
-        
+        self.buttons = []
     
     def activate(self):
         self.isActive = True
@@ -32,13 +32,28 @@ class Screen(object):
         fill(0)
         textFont(f)
         textAlign(CENTER, CENTER)
-        
+    
+    
+    def hover(self, mx, my):
+        for button in self.buttons:
+            button.hover(mx, my)
+    
+    def buttonsClicked(self, mx, my):
+        for button in self.buttons:
+            button.isClicked(mx, my)
+            
+    def buttonsDisplay(self):
+        for button in self.buttons:
+            button.display()
+            
+            
 class StartScreen(Screen):
     def __init__(self):
         # print("Init")
         super(StartScreen, self).__init__()
         self.startButton = Button.BlueButton(Screen.margin2x, Screen.margin6x, "Start")
         self.infoButton = Button.GreyButton(Screen.margin6x, Screen.margin6x, "Info")
+        self.buttons = [self.startButton, self.infoButton]
         
         
     
@@ -50,17 +65,9 @@ class StartScreen(Screen):
             super(StartScreen, self).display()
             textSize(75)
             text("Swing Shot", 360, 180)
-            self.displayButtons()
+            self.buttonsDisplay()
     
-    def displayButtons(self):
-        # print("Display Buttons")
-        self.startButton.display()
-        self.infoButton.display()
     
-    def hover(self, mx, my):
-        if self.isActive:
-            self.startButton.hover(mx, my)
-            self.infoButton.hover(mx, my)
         
 class SelectScreen(Screen):
     def __init__(self):

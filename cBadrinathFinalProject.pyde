@@ -2,6 +2,9 @@ from Screen import StartScreen, SelectScreen
 
 startScreen = StartScreen()
 # selectScreen = SelectScreen()
+def mouseReleased():
+    startScreen.buttonsClicked(mouseX, mouseY)
+
 def mouseMoved():
     startScreen.hover(mouseX, mouseY)
     
