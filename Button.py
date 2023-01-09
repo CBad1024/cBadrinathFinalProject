@@ -19,9 +19,9 @@ class Button(object):
         self.strColor = "#FFFFFF"
         self.strWt = 0
         self.strokePermanent = False
+        
     
-    # def __repr__(self):
-    #     return "[" + str(self.x) + ", " + str(self.y) + '] ' + str()
+   
     
     @classmethod
     def BlueButton(cls, xPos, yPos, message):

@@ -2,14 +2,23 @@ from Button import Button, CircleButton
 
 
 class Screen(object):
+    
+    order0 = 0
+    order1 = 1
+    order2 = 2
+    order3 = 3
     margin = 720/8
     margin2x = 2*margin
     margin6x = 6*margin
     margin4x = 4*margin
     
+    
     def __init__(self):
         self.isActive = False
         self.buttons = []
+        self.order = -1
+        # 
+        # 
     
     def activate(self):
         self.isActive = True
@@ -34,16 +43,14 @@ class Screen(object):
         textAlign(CENTER, CENTER)
     
     
+    
     def hover(self, mx, my):
         for button in self.buttons:
             button.hover(mx, my)
   
     def buttonsClicked(self, mx, my):
-        for button in self.buttons:
-            if button.isClicked(mx, my):
-                self.deactivate()
-                break
-            
+        return Screen.order0
+        
     def buttonsDisplay(self):
         for button in self.buttons:
             button.display()
@@ -56,7 +63,19 @@ class StartScreen(Screen):
         self.startButton = Button.BlueButton(Screen.margin2x, Screen.margin6x, "Start")
         self.infoButton = Button.GreyButton(Screen.margin6x, Screen.margin6x, "Info")
         self.buttons = [self.startButton, self.infoButton]
+        self.order = Screen.order0
         
+        
+    def buttonsClicked(self, mx, my):
+        if self.isActive:
+            if self.startButton.isClicked(mx, my):
+                self.deactivate()
+                return Screen.order1
+            elif self.infoButton.isClicked(mx, my):
+                self.deactivate()
+                return Screen.order2
+                
+    
         
     
         
@@ -84,11 +103,12 @@ class SelectScreen(Screen):
         self.playButton = Button.BlueButton(4*offset, 6*offset, "Play")
         self.colour = color(0)
         self.buttons = [self.redC, self.blueC, self.orangeC, self.greyC, self.greenC]
+        self.order = Screen.order1
     
     
     def buttonsClicked(self, mx, my):
         colorSelected = False
-        
+        order = Screen.order1
         for button in self.buttons:
             button.strokePermanent = False
             
@@ -98,11 +118,14 @@ class SelectScreen(Screen):
                 button.setStrokePermanent()
                 if isinstance(button, CircleButton):
                     self.colour = button.c
+                elif isinstance(button, Button):
+                    order = Screen.order3
+                    
                 
         if colorSelected and not (self.playButton in self.buttons):
             self.buttons.append(self.playButton)
-        print(self.colour)
-            
+        return order
+    
     def display(self):
         if self.isActive:
             # print("Active!!")
@@ -110,6 +133,41 @@ class SelectScreen(Screen):
             textSize(50)
             text("Select Color:", 360, 180)
             self.buttonsDisplay()
+            
+            
+class InfoScreen(Screen):
+    
+    def __init__(self):
+        super(InfoScreen, self).__init__()
+        
+        print("Info Screen")
+        self.order = 2
+        
+    def display(self):
+        if self.isActive:
+            super(InfoScreen, self).display()
+            fill(0)
+            k = loadFont("KoHo-ExtraLight-30.vlw")
+            textFont(k)
+            textSize(30)
+            goal = "GOAL:  Survive as long as possible."
+            text(goal, 360, 360)
+            textSize(20)
+            
+            message = """You are a ball on the run, forbidden from touching objects. 
+             
+            You can attach and detach from poles using a rope (mouseClick)
+            You move like a pendulum.
+            Use your momentum to swing from pole to pole.
+            Use the DOWN arrow key to fall faster and gain more momentum.
+            Your speed will increase as the game goes on.
+            You fail if you hit the ceiling or floor. 
+            
+            
+            Good luck, and enjoy the game."""
+
+            text(message, 360, 360)
+            
     
     
             
