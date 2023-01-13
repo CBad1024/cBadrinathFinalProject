@@ -7,6 +7,7 @@ class Button(object):
     WHITE = "#FFFFFF"
     GREEN = "#94CE97"
     ORANGE = "#F79B5C"
+    PURPLE = "#E6E6FA"
     
     
     def __init__(self, xPos, yPos, xLen, yLen, kolor , message = ""):
@@ -81,7 +82,6 @@ class CircleButton(Button):
         self.setStroke()
         
     def hover(self, mx, my):
-        # print("[" + str(mx) + ", " + str(my) + '] ' + str(dist(mx, my, self.x, self.y)))
         
         if  dist(mx, my, self.x, self.y) <= self.xl/2:
             self.setStroke()
